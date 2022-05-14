@@ -1,0 +1,199 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+            <%@page import="java.sql.DriverManager"%>
+<%@page import="java.sql.ResultSet"%>
+<%@page import="java.sql.Statement"%>
+<%@page import="java.sql.Connection"%>
+<%
+String id = request.getParameter("userid");
+String driver = "com.mysql.jdbc.Driver";
+String connectionUrl = "jdbc:mysql://localhost:3307/";
+String database = "Mybdd";
+String userid = "root";
+String password = "root";
+try {
+Class.forName(driver);
+} catch (ClassNotFoundException e) {
+e.printStackTrace();
+}
+Connection connection = null;
+Statement statement = null;
+ResultSet resultSet = null;
+%>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Table - Brand</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet" href="fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="fonts/font-awesome.min.css">
+    
+    
+    <style><%@include file="/WEB-INF/assets/bootstrap/css/bootstrap.min.css"%></style>
+
+   <%--  <style><%@include file="/WEB-INF/assets/css/styles.css"%></style> --%>
+    
+    
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
+            <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+                    <div class="sidebar-brand-icon rotate-n-15"></div>
+                    <div class="sidebar-brand-text mx-3"><span>enseignant</span></div>
+                </a>
+                <hr class="sidebar-divider my-0">
+                <ul class="navbar-nav text-light" id="accordionSidebar">
+                    <li class="nav-item"></li>
+                    <li class="nav-item"><a class="nav-link" href="profile.jsp"><i class="fas fa-user"></i><span>Profile</span></a></li>
+                    <li class="nav-item"><a class="nav-link active" href="appel.jsp"><i class="fas fa-table"></i><span><strong>Faire un appel</strong><br></span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="relevé_presence.jsp"><i class="far fa-user-circle"></i><span><strong>relevé de présence</strong><br></span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="modification_relevé.jsp"><i class="fas fa-user-circle"></i><span><strong>Modification du relevé</strong><br></span></a></li>
+                </ul>
+                <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
+            </div>
+        </nav>
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content">
+                <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
+                    <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
+                        <ul class="navbar-nav flex-nowrap ms-auto">
+                            
+                            <li class="nav-item dropdown no-arrow mx-1"></li>
+                            <li class="nav-item dropdown no-arrow">
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="d-none d-lg-inline me-2 text-gray-600 small">${user.firstname} ${user.lastname}</span></a>
+                                     <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
+                                        <div class="dropdown-divider"></div><a class="dropdown-item" href="./logoutServlet"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+                <div class="container-fluid">
+                    <h3 class="text-dark mb-4">Appel</h3>
+                    <div class="row mb-3">
+                        <div class="col-lg-8 col-lg-12">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="card shadow" style="margin-bottom:20px">
+											    <div class="card-header py-3">
+											        <p class="text-primary m-0 fw-bold">Créer une séance</p>
+											    </div>
+											    <div class="card-body">
+											        <form action="./InsertSeance" method="post">
+											            <div class="row">
+											                <div class="col-md-6 align-self-center">
+											                    <h6>enter le nom de cette séance :</h6><input class="form-control" type="text" palaceholder="le nom" name="seance" placeholder="Séance 1" required="required" />
+											                </div>
+											                <div class="col-md-6">
+											                    <div class="row">
+											                        <div class="col">
+											                            <div class="form-check"><input checked="checked" name="grp" value="G1" class="form-check-input" type="radio" /><label class="form-check-label" for="formCheck-1">G1</label></div>
+											                            <div class="form-check"><input name="grp" value="G2" class="form-check-input" type="radio" /><label class="form-check-label" for="formCheck-3">G2</label></div>
+											                            <div class="form-check"><input name="grp" value="G3" class="form-check-input" type="radio" /><label class="form-check-label" for="formCheck-4">G3</label></div>
+											                            <div class="form-check"><input name="grp" value="G4" class="form-check-input" type="radio" /><label class="form-check-label" for="formCheck-5">G4</label></div>
+											                            <div class="form-check"><input name="grp" value="G5" class="form-check-input" type="radio" /><label class="form-check-label" for="formCheck-6">G5</label></div>
+											                        </div>
+											                        <div class="col">
+											                            <div class="form-check"><input name="grp" value="G6" class="form-check-input" type="radio" /><label class="form-check-label" for="formCheck-7">G6</label></div>
+											                            <div class="form-check"><input name="grp" value="G7" class="form-check-input" type="radio" /><label class="form-check-label" for="formCheck-8">G7</label></div>
+											                            <div class="form-check"><input name="grp" value="G8" class="form-check-input" type="radio" /><label class="form-check-label" for="formCheck-9">G8</label></div>
+											                            <div class="form-check"><input name="grp" value="G9" class="form-check-input" type="radio" /><label class="form-check-label" for="formCheck-10">G9</label></div>
+											                            <div class="form-check"><input name="grp" value="G10" class="form-check-input" type="radio" /><label class="form-check-label" for="formCheck-11">G10</label></div>
+											                        </div>
+											                    </div>
+											                </div>
+											            </div>
+											            <div class="row">
+											                <div class="col"><input class="btn btn-primary" type="submit" value="Créer"></div>
+											            </div>
+											        </form>
+											    </div>
+											</div>
+                                    <div class="card shadow">
+                                        <div class="card-header py-3">
+                                            <p class="text-primary m-0 fw-bold"><strong>List des étudiants</strong></p>
+                                        </div>
+                                        <div class="card-body">
+                                          
+                                            <form action="./Insertpresence" method="post">
+                                                <div class="table-responsive table mt-2" id="dataTable-2" role="grid" aria-describedby="dataTable_info">
+                                                    <table class="table my-0" id="dataTable">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Nom</th>
+                                                                <th>Prénom</th>
+                                                                <th>Group</th>
+                                                                <th>Présence</th>
+                                                                
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                            <% 
+                                                    try{
+														connection = DriverManager.getConnection(connectionUrl+database, userid, password);
+														statement=connection.createStatement();
+														String grp = "'"+request.getParameter("grp")+"'";
+														String sql ="select * from user_etudient where grp ="+grp;
+														resultSet = statement.executeQuery(sql);
+														int i=0;
+														while(resultSet.next()){
+															resultSet.getString("id"); 
+															%>
+														
+                                                        <tr>
+                                                         <input type="hidden" value="<%=resultSet.getString("id") %>" name="id_etudiant">
+                                                        <input type="hidden" value="<%=resultSet.getString("grp") %>" name="grp">
+                                                        <input type="hidden" value="<%=request.getParameter("seance") %>" name="seance">
+                                                            <td><%=resultSet.getString("nom") %></td>
+                                                            <td><%=resultSet.getString("prenom") %></td>
+                                                            <td><%=resultSet.getString("grp") %></td>
+                                                            <td><div class="form-check" id="existant-1"><input class="form-check-input" name="<%=resultSet.getString("id") %>" type="radio" id="exi_check-1"><label class="form-check-label" for="exi_check-1" style="color: rgb(55,195,53);" value="1">Existant</label></div></td>
+                                                            <td><div class="form-check"><input class="form-check-input" type="radio" name="<%=resultSet.getString("id") %>" id="formCheck-2"><label class="form-check-label" for="formCheck-2" style="color: var(--bs-red);" value="0">absent</label></div> </td>
+                                                               
+                                                                    <%
+											            i++;
+														}
+														connection.close();
+														} catch (Exception e) {
+														e.printStackTrace();
+														}
+														%>
+                                                            </tr>
+                                                            
+                                                        </tbody>
+                                                       
+                                                    </table>
+                                                </div>
+                                                <div class="row">
+												    <div class="col"><input class="btn btn-primary" type="submit" value="sauver"></div>
+												</div>
+                                            </form>
+                                         
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="bg-white sticky-footer">
+                <div class="container my-auto">
+                    <div class="text-center my-auto copyright"><span>Copyright © Brand 2022</span></div>
+                </div>
+            </footer>
+        </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+    </div>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/theme.js"></script>
+</body>
+
+</html>
